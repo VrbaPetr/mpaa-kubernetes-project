@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+  database:
+    build:
+      context: ./services/database
+    image: kubernetes_project_database
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: kubernetes_project
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
