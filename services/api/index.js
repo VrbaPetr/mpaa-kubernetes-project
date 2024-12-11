@@ -13,6 +13,24 @@ const pool = new Pool({
     port: process.env.DB_PORT,
 });
 
+const { Client } = require('@elastic/elasticsearch');
+const esClient = new Client({ node: 'http://elasticsearch:9200' });
+
+app.get('/search', async (req, res) => {
+    const query = req.query.q || '';
+    try {
+        const result = await esClient.search({
+            index: 'example',
+            query: {
+                match: { name: query }
+            }
+        });
+        res.json(result.hits.hits);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+});
+
 app.get('/', (req, res) => {
     res.send('API is running!');
 });
