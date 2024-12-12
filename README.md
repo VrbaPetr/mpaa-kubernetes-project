@@ -23,3 +23,42 @@ Studijní projekt s cílem vyzkoušet si prakticky aplikaci různých technologi
 
 ## Verze
 Aktuální verze **0.7.** pro prvotní testování.
+
+## Struktura Projektu
+- **k8s** -> obsahuje Kubernetes manifesty
+- **services** -> obsahuje podsložky s jednotlivými servisy
+  - **api**
+  - **database**
+  - **elasticsearch**
+  - **redis**   
+- **docker-compose.yaml** -> pro lokální testování kontejnerů
+- **README.md** -> projekt bez readmíčka je jen špatnej joke :D
+
+## Testování a spouštění projektu lokálně
+Stažení projektu
+```
+git clone -b main https://github.com/VrbaPetr/mpaa-kubernetes-project
+```
+**Instalace potřebných závislostí**
+```
+cd services/api
+npm install express pg dotenv
+npm install @elastic/elasticsearch    
+```
+**Poznámka**: V rámci projektu jsou (i když je to netradiční) veškeré závislosti již instalovány v services/api/node_modules
+
+Spuštění kontejnerů v lokálním prostředí 
+```
+docker-compose up -d
+```
+
+Kontrola zdali jsou kontejnery aktivní
+```
+docker ps
+```
+
+## Aktualizace závislostí
+Při aktualizaci závislostí může být problém objemu souborů, které se automaticky instalují. Může vznikat HTTP 400 response, kód níže komplikaci vyřeší
+```
+git config http.postBuffer 524288000
+```
