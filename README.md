@@ -6,7 +6,6 @@
 ![image](https://img.shields.io/badge/Express%20js-000000?style=for-the-badge&logo=express&logoColor=white)
 ![image](https://img.shields.io/badge/Elastic_Search-005571?style=for-the-badge&logo=elasticsearch&logoColor=white)
 ![image](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-![image](https://img.shields.io/badge/redis-CC0000.svg?&style=for-the-badge&logo=redis&logoColor=white)
 
 **Autoři**
 - Petr Vrba Bc.
@@ -14,12 +13,12 @@
 - Matěj Vachuta Bc.
 
 ## Popis projektu
-Studijní projekt s cílem vyzkoušet si prakticky aplikaci různých technologií. Základem je Kubernetes a Docker, které realizují provoz jednotlivých služeb. Služby jsou jmenovitě relační databáze, webová API, Elastic Search a Redis.
+Studijní projekt s cílem vyzkoušet si prakticky aplikaci různých technologií. Základem je Kubernetes a Docker, které realizují provoz jednotlivých služeb. Služby jsou jmenovitě relační databáze, webová API, Elastic Search a Kibana.
 
 - **Databázová služba**: obsahuje testovací data, která zpřístupňuje API službě Elastic Search, která na ní vykonává různé vyhledávací operace.
 - **API**: jednoduchá webová API realizovaná na Node.js s Express.js jako REST API. Úkolem služby je umožňovat komunikaci mezi databázovou službou a Elastic Search.
 - **Elastic Search**: moderní fulltextový vyhledávač, který má v projektu význam vyhledávání v datech.
-- **Redis**: pro rozšíření projektu blíže k praktickému užití jsou endpointy cachované pomocí služby Redis.
+- **Kibana**: grafické rozhraní pro přístup k Elastic Stack.
 
 ## Verze
 Aktuální verze **0.7.** pro prvotní testování.
@@ -29,8 +28,7 @@ Aktuální verze **0.7.** pro prvotní testování.
 - **services** -> obsahuje podsložky s jednotlivými servisy
   - **api**
   - **database**
-  - **elasticsearch**
-  - **redis**   
+  - **kibana**  
 - **docker-compose.yaml** -> pro lokální testování kontejnerů
 - **README.md** -> projekt bez readmíčka je jen špatnej joke :D
 
@@ -61,4 +59,34 @@ docker ps
 Při aktualizaci závislostí může být problém objemu souborů, které se automaticky instalují. Může vznikat HTTP 400 response, kód níže komplikaci vyřeší
 ```
 git config http.postBuffer 524288000
+```
+
+## Indexace dat v Elastic Search
+Jako první je potřeba vytvořit index, do kterého se budou mapovat záznamy pro vyhledávání
+```
+PUT /airports
+{
+  "mappings": {
+    "properties": {
+      "name": { "type": "text" },
+      "city": { "type": "text" },
+      "country": { "type": "text" },
+      "iata_code": { "type": "keyword" },
+      "icao_code": { "type": "keyword" },
+      "latitude": { "type": "float" },
+      "longitude": { "type": "float" },
+      "altitude": { "type": "integer" },
+      "dst": { "type": "text" },
+      "tz_database_time_zone": { "type": "text" },
+      "type": { "type": "text" },
+      "source": { "type": "text" }
+    }
+  }
+}
+```
+
+Pro synchronizaci dat s databází je potřeba odeslat POST request na API Endpoint
+
+```
+http://localhost:3000/elastic-index
 ```
