@@ -42,7 +42,6 @@ git clone -b main https://github.com/VrbaPetr/mpaa-kubernetes-project
 cd services/api
 npm install
 ```
-**Poznámka**: V rámci projektu jsou (i když je to netradiční) veškeré závislosti již instalovány v services/api/node_modules
 
 Spuštění kontejnerů v lokálním prostředí 
 ```
