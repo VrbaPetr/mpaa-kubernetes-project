@@ -40,8 +40,7 @@ git clone -b main https://github.com/VrbaPetr/mpaa-kubernetes-project
 **Instalace potřebných závislostí**
 ```
 cd services/api
-npm install express pg dotenv
-npm install @elastic/elasticsearch    
+npm install
 ```
 **Poznámka**: V rámci projektu jsou (i když je to netradiční) veškeré závislosti již instalovány v services/api/node_modules
 
