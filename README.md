@@ -45,7 +45,7 @@ npm install
 
 Spuštění kontejnerů v lokálním prostředí 
 ```
-docker compose up -d
+docker-compose up -d
 ```
 
 Kontrola zdali jsou kontejnery aktivní
