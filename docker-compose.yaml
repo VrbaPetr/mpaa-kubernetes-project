@@ -3,7 +3,7 @@ services:
   database:
     build:
       context: ./services/database
-    image: kubernetes_project_database
+    image: mpaa_postgresql
     ports:
       - "5432:5432"
     environment:
@@ -13,7 +13,7 @@ services:
   api:
     build:
       context: ./services/api
-    image: kubernetes_project_api
+    image: kubernetes_project_api_v5.2
     ports:
       - "3000:3000"
     environment:
@@ -31,6 +31,9 @@ services:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - xpack.security.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - xpack.security.http.ssl.enabled=false
     ulimits:
       memlock:
         soft: -1
@@ -38,3 +41,20 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
+    networks:
+      - backend
+  kibana:
+    build: 
+      context: ./services/kibana
+    image: mpaa_kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
