@@ -3,7 +3,7 @@ services:
   database:
     build:
       context: ./services/database
-    image: mpaa_postgresql
+    image: vvn_postgresql
     ports:
       - "5432:5432"
     environment:
@@ -13,7 +13,7 @@ services:
   api:
     build:
       context: ./services/api
-    image: kubernetes_project_api_v5.2
+    image: vvn_api
     ports:
       - "3000:3000"
     environment:
@@ -26,7 +26,7 @@ services:
       - database
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.10.0
-    container_name: elasticsearch
+    container_name: vvn_elasticsearch
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
@@ -46,7 +46,7 @@ services:
   kibana:
     build: 
       context: ./services/kibana
-    image: mpaa_kibana
+    image: vvn_kibana
     ports:
       - "5601:5601"
     environment:
